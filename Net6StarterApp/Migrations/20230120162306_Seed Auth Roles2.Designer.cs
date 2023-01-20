@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Net6StarterApp.Data;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
@@ -11,9 +12,10 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Net6StarterApp.Migrations
 {
     [DbContext(typeof(ApiDbContext))]
-    partial class MyDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230120162306_Seed Auth Roles2")]
+    partial class SeedAuthRoles2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -46,29 +48,6 @@ namespace Net6StarterApp.Migrations
                         .HasDatabaseName("RoleNameIndex");
 
                     b.ToTable("AspNetRoles", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = "22f4ab86-737b-499d-a63a-2af3d8936951",
-                            ConcurrencyStamp = "8324ba2c-e53c-4007-9dfd-795c1183b085",
-                            Name = "User",
-                            NormalizedName = "USER"
-                        },
-                        new
-                        {
-                            Id = "267f2e74-1936-4b28-8dfe-d4cdee0cc7c1",
-                            ConcurrencyStamp = "60650c7a-a57b-490b-9f7e-2fa4617944c4",
-                            Name = "SuperAdmin",
-                            NormalizedName = "SUPERADMIN"
-                        },
-                        new
-                        {
-                            Id = "72a03123-8a8f-44ea-8a1e-15bfc3ef0f9c",
-                            ConcurrencyStamp = "fd787422-15c0-49c5-a55c-f1ff684a17f7",
-                            Name = "Support",
-                            NormalizedName = "SUPPORT"
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

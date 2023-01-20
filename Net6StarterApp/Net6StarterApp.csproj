@@ -2,10 +2,16 @@
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
-    <Nullable>enable</Nullable>
+    <Nullable>disable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>2cb7934a-d24d-4899-ae0a-b5b7dc40cb4e</UserSecretsId>
   </PropertyGroup>
 
+
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <WarningLevel>4</WarningLevel>
+    <NoWarn>1701;1702;IL2121;CS8632</NoWarn>
+  </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.12" />
@@ -22,6 +28,9 @@
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.8" />
     <PackageReference Include="AutoMapper" Version="12.0.0" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.0" />
+    <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="6.25.1" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.25.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="6.0.13" />
   </ItemGroup>
 
   <ItemGroup>
@@ -128,11 +137,33 @@
     <None Remove="Net6StarterAppTests\bin\Debug\net6.0\Net6StarterAppTests.dll" />
     <None Remove="Net6StarterAppTests\obj\Debug\net6.0\ref\Net6StarterAppTests.dll" />
     <None Remove="Net6StarterAppTests\bin\Debug\net6.0\Net6StarterAppTests.pdb" />
+    <None Remove="Services\" />
+    <None Remove="Auth\" />
+    <None Remove="Auth\Models\" />
+    <None Remove="Auth\Utilities\" />
+    <None Remove="Controllers\" />
+    <None Remove="Authentication\" />
+    <None Remove="Authentication\Models\" />
+    <None Remove="Authentication\Controllers\" />
+    <None Remove="Data\SeedData\" />
+    <None Remove="Authentication\Data\" />
+    <None Remove="Authentication\Data\SeedData\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Data\" />
     <Folder Include="Models\" />
     <Folder Include="Configuration\" />
+    <Folder Include="Services\" />
+    <Folder Include="Auth\" />
+    <Folder Include="Auth\Models\" />
+    <Folder Include="Auth\Utilities\" />
+    <Folder Include="Controllers\" />
+    <Folder Include="Authentication\" />
+    <Folder Include="Authentication\Models\" />
+    <Folder Include="Authentication\Controllers\" />
+    <Folder Include="Data\SeedData\" />
+    <Folder Include="Authentication\Data\" />
+    <Folder Include="Authentication\Data\SeedData\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="Net6StarterAppTests\obj\Debug\net6.0\Net6StarterAppTests.GlobalUsings.g.cs" />

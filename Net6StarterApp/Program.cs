@@ -2,35 +2,54 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Net6StarterApp.Data;
-using Net6StarterApp.Configuration;
+using Npgsql;
+using Net6StarterApp.Authentication;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
+using Net6StarterApp.Models;
+using Net6StarterApp.Authentication.Data;
+using Net6StarterApp.Authentication.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Configuration.AddEnvironmentVariables();
 
 // Add services to the container.
 
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+//builder.Services.AddScoped<JwtUtils>();
+//builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
 
-
-
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-builder.Services.Configure<JwtConfig>(builder.Configuration.GetSection("JwtConfig"));
-
-builder.Services.AddDbContext<MyDbContext>(options =>
-               options.UseNpgsql(builder.Configuration.GetConnectionString("Database"))
+builder.Services.AddDbContext<ApiDbContext>(options =>
+               options.UseNpgsql(builder.Configuration["DbConnection"])
             );
-builder.Services.AddHttpContextAccessor();
 
+builder.Services.AddAuthentication();
 
-
-
+//custom extension for Auth setup
+builder.Services.ConfigureIdentity<ApiDbContext>();
 
 builder.Services.AddControllers();
+
+builder.Services.AddMvc()
+       .ConfigureApiBehaviorOptions(opt
+           =>
+       {
+          // opt.SuppressModelStateInvalidFilter = true;
+           opt.InvalidModelStateResponseFactory = actionContext =>
+           {
+              return ApiMessageHandler.CustomModelstateErrorResponse(actionContext);
+           };
+       });
+
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-
 
 builder.Services.AddCors(p => p.AddPolicy("corsapp", builder =>
 {
@@ -48,9 +67,14 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseCors("corsapp");
+app.UseRouting();
+
 app.UseAuthorization();
 
-app.MapControllers();
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllers();
+});
 
 app.Run();
 

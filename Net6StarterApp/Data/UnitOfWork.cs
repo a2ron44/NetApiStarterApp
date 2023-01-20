@@ -7,10 +7,10 @@ namespace Net6StarterApp.Data
 {
 	public class UnitOfWork : IUnitOfWork
 	{
-        private readonly MyDbContext _context;
+        private readonly ApiDbContext _context;
         private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public UnitOfWork(MyDbContext context, IHttpContextAccessor httpContextAccessor)
+        public UnitOfWork(ApiDbContext context, IHttpContextAccessor httpContextAccessor)
         {
             _context = context;
             _httpContextAccessor = httpContextAccessor;

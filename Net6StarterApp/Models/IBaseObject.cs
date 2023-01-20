@@ -6,13 +6,13 @@ namespace Net6StarterApp.Models
 
         DateTime CreateDate { get; set; }
 
-        string? CreatedBy { get; set; }
+        string CreatedBy { get; set; }
 
         DateTime LastModifiedDate { get; set; }
 
-        string? LastModifiedBy { get; set; }
+        string LastModifiedBy { get; set; }
 
-        string? ModifiedSource { get; set; }
+        string ModifiedSource { get; set; }
     }
 }
 
