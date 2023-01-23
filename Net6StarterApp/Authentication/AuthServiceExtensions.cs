@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Net6StarterApp.Authentication.Data;
 using Net6StarterApp.Authentication.Models;
 using Net6StarterApp.Data;
@@ -14,6 +17,11 @@ namespace Net6StarterApp.Authentication
             var builder = services.AddIdentityCore<ApiUser>(q =>
             {
                 q.User.RequireUniqueEmail = true;
+                q.Password.RequireDigit = false;
+                q.Password.RequiredLength = 6;
+                q.Password.RequireUppercase = false;
+                q.Password.RequireLowercase = false;
+                q.Password.RequireNonAlphanumeric = false;
             });
 
             builder = new IdentityBuilder(builder.UserType, typeof(IdentityRole), services);
@@ -21,6 +29,28 @@ namespace Net6StarterApp.Authentication
             return builder;
         }
 
+        public static void ConfigureJWT(this IServiceCollection services, IConfiguration Configuration)
+        {
+            var jwtSettings = Configuration.GetSection("JwtConfig");
+            var jwtKey = Configuration.GetSection("JWT_KEY").Value;
+
+            services.AddAuthentication(o =>
+            {
+                o.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                o.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+                .AddJwtBearer(o => {
+                    o.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuer = true,
+                        ValidateLifetime = true,
+                        ValidateIssuerSigningKey = true,
+                        ValidIssuer = jwtSettings.GetSection("Issuer").Value,
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey))
+                    };
+                });
+        
+        }
     }
 }
 

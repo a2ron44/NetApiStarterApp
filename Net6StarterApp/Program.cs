@@ -11,16 +11,14 @@ using Net6StarterApp.Models;
 using Net6StarterApp.Authentication.Data;
 using Net6StarterApp.Authentication.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Net6StarterApp.Authentication.Services;
+using Net6StarterApp;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Configuration.AddEnvironmentVariables();
 
+Console.WriteLine("TEST: " + builder.Configuration["JWT_KEY"]);
 // Add services to the container.
-
-builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
-//builder.Services.AddScoped<JwtUtils>();
-//builder.Services.AddScoped<IAuthService, AuthService>();
-builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
@@ -28,10 +26,17 @@ builder.Services.AddDbContext<ApiDbContext>(options =>
                options.UseNpgsql(builder.Configuration["DbConnection"])
             );
 
-builder.Services.AddAuthentication();
 
+builder.Services.AddAuthentication();
 //custom extension for Auth setup
 builder.Services.ConfigureIdentity<ApiDbContext>();
+builder.Services.ConfigureJWT(builder.Configuration);
+
+
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
 
 builder.Services.AddControllers();
 
@@ -47,15 +52,15 @@ builder.Services.AddMvc()
        });
 
 
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+
+//builder.Services.AddEndpointsApiExplorer();
 
 builder.Services.AddCors(p => p.AddPolicy("corsapp", builder =>
 {
     builder.WithOrigins("*").AllowAnyMethod().AllowAnyHeader();
 }));
 
+builder.Services.AddSwaggerDocs(builder.Configuration);
 
 var app = builder.Build();
 
