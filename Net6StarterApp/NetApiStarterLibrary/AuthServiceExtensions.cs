@@ -1,16 +1,14 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using Net6StarterApp.Authentication.Data;
-using Net6StarterApp.Authentication.Models;
-using Net6StarterApp.Authentication.Permissions;
-using Net6StarterApp.Data;
+using NetApiStarterLibrary.Models;
 
-namespace Net6StarterApp.Authentication
+namespace NetApiStarterLibrary
 {
 	public static class AuthServiceExtensions
 	{
@@ -33,8 +31,13 @@ namespace Net6StarterApp.Authentication
 
         public static void ConfigureJWT(this IServiceCollection services, IConfiguration Configuration)
         {
-            var jwtSettings = Configuration.GetSection("JwtConfig");
+            var jwtSettings = Configuration.GetSection("NetApiStarterLibaryConfig");
             var jwtKey = Configuration.GetSection("JWT_KEY").Value;
+
+            if(jwtKey == null)
+            {
+                jwtKey = "f20eabfb-ed2c-4a78-914e-96cb476c150c";
+            }
 
             services.AddAuthentication(o =>
             {

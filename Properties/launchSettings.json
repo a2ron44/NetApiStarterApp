@@ -9,7 +9,7 @@
     }
   },
   "profiles": {
-    "Net6StarterApp": {
+    "NetApiStarterApp": {
       "commandName": "Project",
       "launchBrowser": true,
       "launchUrl": "swagger",

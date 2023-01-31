@@ -1,5 +1,5 @@
 ﻿using System;
-namespace Net6StarterApp.Models
+namespace NetApiStarterLibrary.Models
 {
     public interface IBaseObject
     {

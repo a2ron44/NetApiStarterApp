@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Net6StarterApp.Models
+namespace NetApiStarterLibrary.Models
 {
 	public class ApiResponse
 	{

@@ -1,15 +1,7 @@
-﻿using System;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore;
-using Net6StarterApp.Authentication.Models;
-using Net6StarterApp.Authentication.Data.SeedData;
-using Net6StarterApp.Models;
-using Net6StarterApp.Authentication.Permissions;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore.Metadata;
-using Net6StarterApp.Authentication.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using NetApiStarterLibrary.Data;
 
-namespace Net6StarterApp.Data
+namespace NetApiStarterApp.Data
 {
 
 

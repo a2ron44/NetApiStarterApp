@@ -1,8 +1,7 @@
-﻿using System;
-using System.Security.Claims;
+﻿using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 
-namespace Net6StarterApp.Authentication.Permissions
+namespace NetApiStarterLibrary.Permissions
 {
 	public class PermissionAuthorizationHandler : AuthorizationHandler<PermissionRequirement>
 	{

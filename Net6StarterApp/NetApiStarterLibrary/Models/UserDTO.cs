@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace Net6StarterApp.Authentication.Models
+namespace NetApiStarterLibrary.Models
 {
 	public class LoginUserDTO
 	{

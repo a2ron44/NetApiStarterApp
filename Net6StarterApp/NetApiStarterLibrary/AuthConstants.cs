@@ -1,5 +1,5 @@
 ﻿using System;
-namespace Net6StarterApp.Authentication
+namespace NetApiStarterLibrary
 {
     public static class AuthConstants
     {

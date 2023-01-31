@@ -1,7 +1,6 @@
-﻿using System;
-using Net6StarterApp.Authentication.Models;
+﻿using NetApiStarterLibrary.Models;
 
-namespace Net6StarterApp.Authentication.Services
+namespace NetApiStarterLibrary.Services
 {
 	public interface IAuthService
 	{

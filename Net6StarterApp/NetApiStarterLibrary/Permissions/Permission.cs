@@ -1,9 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.Reflection;
 using Microsoft.AspNetCore.Identity;
-using Net6StarterApp.Authentication.Models;
+using NetApiStarterLibrary.Models;
 
-namespace Net6StarterApp.Authentication.Permissions
+namespace NetApiStarterLibrary.Permissions
 {
 	public static class Permission
 	{

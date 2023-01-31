@@ -1,8 +1,8 @@
 ﻿using System;
 using Microsoft.AspNetCore.Identity;
-using Net6StarterApp.Authentication.Permissions;
+using NetApiStarterLibrary.Permissions;
 
-namespace Net6StarterApp.Authentication.Models
+namespace NetApiStarterLibrary.Models
 {
 	public class ApiRole : IdentityRole
 	{

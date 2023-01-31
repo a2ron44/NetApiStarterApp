@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Net6StarterApp.Authentication.Permissions;
+using NetApiStarterLibrary.Permissions;
 
 namespace AuthSample.Controllers;
 

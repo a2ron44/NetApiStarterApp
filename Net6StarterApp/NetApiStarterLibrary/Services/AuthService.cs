@@ -5,10 +5,10 @@ using System.Text;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
-using Net6StarterApp.Authentication.Models;
-using Net6StarterApp.Authentication.Permissions;
+using NetApiStarterLibrary.Models;
+using NetApiStarterLibrary.Permissions;
 
-namespace Net6StarterApp.Authentication.Services
+namespace NetApiStarterLibrary.Services
 {
 	public class AuthService : IAuthService
 	{

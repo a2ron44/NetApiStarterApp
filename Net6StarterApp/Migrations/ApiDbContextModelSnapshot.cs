@@ -3,12 +3,12 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Net6StarterApp.Data;
+using NetApiStarterApp.Data;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace Net6StarterApp.Migrations
+namespace NetApiStarterApp.Migrations
 {
     [DbContext(typeof(ApiDbContext))]
     partial class ApiDbContextModelSnapshot : ModelSnapshot
@@ -174,7 +174,7 @@ namespace Net6StarterApp.Migrations
                     b.ToTable("user_token", (string)null);
                 });
 
-            modelBuilder.Entity("Net6StarterApp.Authentication.Models.ApiRole", b =>
+            modelBuilder.Entity("NetApiStarterApp.NetApiStarterLibraryModels.ApiRole", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("text")
@@ -225,7 +225,7 @@ namespace Net6StarterApp.Migrations
                         });
                 });
 
-            modelBuilder.Entity("Net6StarterApp.Authentication.Models.ApiUser", b =>
+            modelBuilder.Entity("NetApiStarterApp.NetApiStarterLibraryModels.ApiUser", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("text")
@@ -305,7 +305,7 @@ namespace Net6StarterApp.Migrations
                     b.ToTable("user", (string)null);
                 });
 
-            modelBuilder.Entity("Net6StarterApp.Authentication.Permissions.PermissionType", b =>
+            modelBuilder.Entity("NetApiStarterApp.NetApiStarterLibraryPermissions.PermissionType", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -343,14 +343,14 @@ namespace Net6StarterApp.Migrations
 
             modelBuilder.Entity("ApiRolePermissionType", b =>
                 {
-                    b.HasOne("Net6StarterApp.Authentication.Permissions.PermissionType", null)
+                    b.HasOne("NetApiStarterApp.NetApiStarterLibraryPermissions.PermissionType", null)
                         .WithMany()
                         .HasForeignKey("PermissionTypesId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired()
                         .HasConstraintName("fk_role_permission_permission_type_permission_types_id");
 
-                    b.HasOne("Net6StarterApp.Authentication.Models.ApiRole", null)
+                    b.HasOne("NetApiStarterApp.NetApiStarterLibraryModels.ApiRole", null)
                         .WithMany()
                         .HasForeignKey("RolesId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -360,7 +360,7 @@ namespace Net6StarterApp.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
-                    b.HasOne("Net6StarterApp.Authentication.Models.ApiRole", null)
+                    b.HasOne("NetApiStarterApp.NetApiStarterLibraryModels.ApiRole", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -370,7 +370,7 @@ namespace Net6StarterApp.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("Net6StarterApp.Authentication.Models.ApiUser", null)
+                    b.HasOne("NetApiStarterApp.NetApiStarterLibraryModels.ApiUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -380,7 +380,7 @@ namespace Net6StarterApp.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("Net6StarterApp.Authentication.Models.ApiUser", null)
+                    b.HasOne("NetApiStarterApp.NetApiStarterLibraryModels.ApiUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -390,14 +390,14 @@ namespace Net6StarterApp.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
                 {
-                    b.HasOne("Net6StarterApp.Authentication.Models.ApiRole", null)
+                    b.HasOne("NetApiStarterApp.NetApiStarterLibraryModels.ApiRole", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired()
                         .HasConstraintName("fk_user_role_role_role_id");
 
-                    b.HasOne("Net6StarterApp.Authentication.Models.ApiUser", null)
+                    b.HasOne("NetApiStarterApp.NetApiStarterLibraryModels.ApiUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -407,7 +407,7 @@ namespace Net6StarterApp.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("Net6StarterApp.Authentication.Models.ApiUser", null)
+                    b.HasOne("NetApiStarterApp.NetApiStarterLibraryModels.ApiUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict)

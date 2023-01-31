@@ -3,11 +3,10 @@ using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Net6StarterApp.Authentication.Models;
-using Net6StarterApp.Authentication.Services;
-using Net6StarterApp.Models;
+using NetApiStarterLibrary.Models;
+using NetApiStarterLibrary.Services;
 
-namespace Net6StarterApp.Authentication.Controllers
+namespace NetApiStarterLibrary.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]

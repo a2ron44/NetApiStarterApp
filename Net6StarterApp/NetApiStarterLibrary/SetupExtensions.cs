@@ -1,13 +1,13 @@
 ﻿using System;
 using Microsoft.OpenApi.Models;
 
-namespace Net6StarterApp
+namespace NetApiStarterLibrary
 {
     public static class SetupExtensions
     {
         public static void AddSwaggerDocs(this IServiceCollection services, IConfiguration Configuration)
         {
-            var appName = Configuration.GetSection("AppDefaults:AppName").Value;
+            var appName = Configuration.GetSection("NetApiStarterLibaryConfig:AppName").Value;
 
             services.AddSwaggerGen(c =>
             {

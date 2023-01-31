@@ -2,10 +2,10 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Net6StarterApp.Authentication.Models;
-using Net6StarterApp.Authentication.Permissions;
+using NetApiStarterLibrary.Models;
+using NetApiStarterLibrary.Permissions;
 
-namespace Net6StarterApp.Authentication.Data.SeedData
+namespace NetApiStarterLibrary.Data.SeedData
 {
 	public class SeedDataRoles : IEntityTypeConfiguration<ApiRole>
 	{

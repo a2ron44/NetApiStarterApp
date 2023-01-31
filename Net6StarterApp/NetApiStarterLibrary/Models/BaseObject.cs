@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Net6StarterApp.Models
+namespace NetApiStarterLibrary.Models
 {
     public class BaseObject : IBaseObject
     {

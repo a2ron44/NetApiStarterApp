@@ -1,7 +1,6 @@
-﻿using System;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 
-namespace Net6StarterApp.Authentication.Permissions
+namespace NetApiStarterLibrary.Permissions
 {
 	public class HasPermissionAttribute : AuthorizeAttribute
 	{

@@ -5,6 +5,7 @@
     <Nullable>disable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UserSecretsId>2cb7934a-d24d-4899-ae0a-b5b7dc40cb4e</UserSecretsId>
+    <AssemblyName>Net6StarterApp</AssemblyName>
   </PropertyGroup>
 
 
@@ -139,15 +140,8 @@
     <None Remove="Net6StarterAppTests\obj\Debug\net6.0\ref\Net6StarterAppTests.dll" />
     <None Remove="Net6StarterAppTests\bin\Debug\net6.0\Net6StarterAppTests.pdb" />
     <None Remove="Services\" />
-    <None Remove="Authentication\" />
-    <None Remove="Authentication\Models\" />
-    <None Remove="Authentication\Controllers\" />
     <None Remove="Data\SeedData\" />
-    <None Remove="Authentication\Data\" />
-    <None Remove="Authentication\Data\SeedData\" />
-    <None Remove="Authentication\Services\" />
     <None Remove="Controllers\" />
-    <None Remove="Authentication\Permissions\" />
     <None Remove="Migrations\" />
   </ItemGroup>
   <ItemGroup>
@@ -155,15 +149,8 @@
     <Folder Include="Models\" />
     <Folder Include="Configuration\" />
     <Folder Include="Services\" />
-    <Folder Include="Authentication\" />
-    <Folder Include="Authentication\Models\" />
-    <Folder Include="Authentication\Controllers\" />
     <Folder Include="Data\SeedData\" />
-    <Folder Include="Authentication\Data\" />
-    <Folder Include="Authentication\Data\SeedData\" />
-    <Folder Include="Authentication\Services\" />
     <Folder Include="Controllers\" />
-    <Folder Include="Authentication\Permissions\" />
     <Folder Include="Migrations\" />
   </ItemGroup>
   <ItemGroup>

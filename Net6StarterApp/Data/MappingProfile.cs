@@ -1,15 +1,14 @@
 ﻿using AutoMapper;
-using Net6StarterApp.Authentication.Models;
+using NetApiStarterLibrary.Data;
 
-namespace Net6StarterApp.Data
+namespace NetApiStarterApp.Data
 {
-	public class MappingProfile : Profile
-	{
+	public class MappingProfile : ApiMappingProfile
+    {
 		public MappingProfile()
 		{
 
-			//Auth OBJ
-			CreateMap<ApiUser, UserDTO>().ReverseMap();
+			
 		}
 	}
 }

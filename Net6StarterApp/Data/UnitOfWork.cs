@@ -1,9 +1,10 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using NetApiStarterLibrary.Data;
+using NetApiStarterLibrary.Models;
 using System.Security.Claims;
-using Net6StarterApp.Models;
 
-namespace Net6StarterApp.Data
+
+namespace NetApiStarterApp.Data
 {
 	public class UnitOfWork : IUnitOfWork
 	{
@@ -21,7 +22,7 @@ namespace Net6StarterApp.Data
             // will set metadata on all saves
 
             var now = DateTime.Now;
-            var currentUser = _httpContextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.Email);
+            var currentUser = _httpContextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.Name);
 
             foreach (var changedEntity in _context.ChangeTracker.Entries())
             {

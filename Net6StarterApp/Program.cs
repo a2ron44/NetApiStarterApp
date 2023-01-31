@@ -1,23 +1,25 @@
 ﻿
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using Net6StarterApp.Data;
 using Npgsql;
-using Net6StarterApp.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
-using Net6StarterApp.Models;
-using Net6StarterApp.Authentication.Data;
-using Net6StarterApp.Authentication.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Net6StarterApp.Authentication.Services;
-using Net6StarterApp;
 using Microsoft.AspNetCore.Authorization;
-using Net6StarterApp.Authentication.Permissions;
+using NetApiStarterLibrary.Permissions;
+using NetApiStarterLibrary;
+using NetApiStarterLibrary.Data;
+using NetApiStarterLibrary.Models;
+using NetApiStarterLibrary.Services;
+using NetApiStarterApp.Data;
+using System.Collections;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Configuration.AddEnvironmentVariables();
+
+foreach (DictionaryEntry de in Environment.GetEnvironmentVariables())
+    Console.WriteLine("  {0} = {1}", de.Key, de.Value);
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddDbContext<ApiDbContext>(options =>
@@ -27,22 +29,16 @@ builder.Services.AddDbContext<ApiDbContext>(options =>
 }
 );
 
-
 builder.Services.AddAuthentication();
-//custom extension for Auth setup
+
+//custom extension for NetApiStarterLibrary
 builder.Services.ConfigureIdentity<ApiDbContext>();
 builder.Services.ConfigureJWT(builder.Configuration);
 builder.Services.AddSingleton<IAuthorizationHandler, PermissionAuthorizationHandler>();
 builder.Services.AddSingleton<IAuthorizationPolicyProvider, PermissionAuthorizationPolicyProvider>();
 builder.Services.AddScoped<IAuthService, AuthService>();
-//end auth
-
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-
-
-builder.Services.AddControllers();
-
 //make sure errors go to API Response object
 builder.Services.AddMvc()
        .ConfigureApiBehaviorOptions(opt
@@ -53,14 +49,14 @@ builder.Services.AddMvc()
               return ApiMessageHandler.CustomModelstateErrorResponse(actionContext);
            };
        });
+builder.Services.AddSwaggerDocs(builder.Configuration);
+//end NetApiStarterLibrary config
 
-
+builder.Services.AddControllers();
 builder.Services.AddCors(p => p.AddPolicy("corsPolicy", builder =>
 {
     builder.WithOrigins("*").AllowAnyMethod().AllowAnyHeader();
 }));
-
-builder.Services.AddSwaggerDocs(builder.Configuration);
 
 var app = builder.Build();
 

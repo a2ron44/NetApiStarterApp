@@ -3,12 +3,11 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Net6StarterApp.Authentication.Data.SeedData;
-using Net6StarterApp.Authentication.Models;
-using Net6StarterApp.Authentication.Permissions;
-using Net6StarterApp.Data;
+using NetApiStarterLibrary.Data.SeedData;
+using NetApiStarterLibrary.Models;
+using NetApiStarterLibrary.Permissions;
 
-namespace Net6StarterApp.Authentication.Data
+namespace NetApiStarterLibrary.Data
 {
 	public class ApiAuthDbContext : IdentityDbContext<ApiUser, ApiRole, string>
     {
