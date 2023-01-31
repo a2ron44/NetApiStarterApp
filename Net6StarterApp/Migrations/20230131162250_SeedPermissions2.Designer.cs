@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Net6StarterApp.Data;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
@@ -11,9 +12,10 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Net6StarterApp.Migrations
 {
     [DbContext(typeof(ApiDbContext))]
-    partial class MyDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230131162250_SeedPermissions2")]
+    partial class SeedPermissions2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -251,7 +253,7 @@ namespace Net6StarterApp.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("PermissionTypes", (string)null);
+                    b.ToTable("RolePermissions");
 
                     b.HasData(
                         new
@@ -305,7 +307,7 @@ namespace Net6StarterApp.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("SampleObjs", (string)null);
+                    b.ToTable("SampleObjs");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

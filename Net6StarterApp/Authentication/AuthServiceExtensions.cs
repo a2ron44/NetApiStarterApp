@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Net6StarterApp.Authentication.Data;
 using Net6StarterApp.Authentication.Models;
+using Net6StarterApp.Authentication.Permissions;
 using Net6StarterApp.Data;
 
 namespace Net6StarterApp.Authentication
@@ -43,9 +45,11 @@ namespace Net6StarterApp.Authentication
                     o.TokenValidationParameters = new TokenValidationParameters
                     {
                         ValidateIssuer = true,
+                        ValidateAudience = true,
                         ValidateLifetime = true,
                         ValidateIssuerSigningKey = true,
                         ValidIssuer = jwtSettings.GetSection("Issuer").Value,
+                        ValidAudience = jwtSettings.GetSection("Audience").Value,
                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey))
                     };
                 });

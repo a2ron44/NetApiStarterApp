@@ -145,6 +145,8 @@
     <None Remove="Authentication\Data\" />
     <None Remove="Authentication\Data\SeedData\" />
     <None Remove="Authentication\Services\" />
+    <None Remove="Controllers\" />
+    <None Remove="Authentication\Permissions\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Data\" />
@@ -158,6 +160,8 @@
     <Folder Include="Authentication\Data\" />
     <Folder Include="Authentication\Data\SeedData\" />
     <Folder Include="Authentication\Services\" />
+    <Folder Include="Controllers\" />
+    <Folder Include="Authentication\Permissions\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="Net6StarterAppTests\obj\Debug\net6.0\Net6StarterAppTests.GlobalUsings.g.cs" />

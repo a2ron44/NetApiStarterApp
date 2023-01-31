@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using Net6StarterApp.Authentication.Models;
+using Net6StarterApp.Authentication.Permissions;
 
 namespace Net6StarterApp.Authentication.Services
 {
@@ -86,7 +87,23 @@ namespace Net6StarterApp.Authentication.Services
                 claims.Add(new Claim(ClaimTypes.Role, role));
             }
 
+            var permissions = GetPermissionClaims(_user.UserName);
+            foreach(var perm in permissions)
+            {
+                claims.Add(perm);
+            }
+
             return claims;
+        }
+
+        private  List<Claim> GetPermissionClaims(string userName)
+        {
+            var claims = new List<Claim>();
+
+            claims.Add(new Claim(AuthConstants.CustomClaimPermissions, Permission.ViewData.ToString()));
+            claims.Add(new Claim(AuthConstants.CustomClaimPermissions, Permission.EditData.ToString()));
+            return claims;
+            
         }
 
         private JwtSecurityToken GenerateTokenOptions(SigningCredentials signingCredentials, List<Claim> claims)
@@ -96,6 +113,7 @@ namespace Net6StarterApp.Authentication.Services
 
             var options = new JwtSecurityToken(
                 issuer: jwtSettings.GetSection("Issuer").Value,
+                audience: jwtSettings.GetSection("Audience").Value,
                 claims: claims,
                 expires: DateTime.Now.AddMinutes(tokenExpiryMinutes),
                 signingCredentials: signingCredentials

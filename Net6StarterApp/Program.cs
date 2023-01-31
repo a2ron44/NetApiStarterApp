@@ -13,13 +13,11 @@ using Net6StarterApp.Authentication.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Net6StarterApp.Authentication.Services;
 using Net6StarterApp;
+using Microsoft.AspNetCore.Authorization;
+using Net6StarterApp.Authentication.Permissions;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Configuration.AddEnvironmentVariables();
-
-Console.WriteLine("TEST: " + builder.Configuration["JWT_KEY"]);
-// Add services to the container.
-
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddDbContext<ApiDbContext>(options =>
@@ -31,20 +29,22 @@ builder.Services.AddAuthentication();
 //custom extension for Auth setup
 builder.Services.ConfigureIdentity<ApiDbContext>();
 builder.Services.ConfigureJWT(builder.Configuration);
-
+builder.Services.AddSingleton<IAuthorizationHandler, PermissionAuthorizationHandler>();
+builder.Services.AddSingleton<IAuthorizationPolicyProvider, PermissionAuthorizationPolicyProvider>();
+builder.Services.AddScoped<IAuthService, AuthService>();
+//end auth
 
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
-builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
 
 builder.Services.AddControllers();
 
+//make sure errors go to API Response object
 builder.Services.AddMvc()
        .ConfigureApiBehaviorOptions(opt
            =>
        {
-          // opt.SuppressModelStateInvalidFilter = true;
            opt.InvalidModelStateResponseFactory = actionContext =>
            {
               return ApiMessageHandler.CustomModelstateErrorResponse(actionContext);
@@ -52,10 +52,7 @@ builder.Services.AddMvc()
        });
 
 
-
-//builder.Services.AddEndpointsApiExplorer();
-
-builder.Services.AddCors(p => p.AddPolicy("corsapp", builder =>
+builder.Services.AddCors(p => p.AddPolicy("corsPolicy", builder =>
 {
     builder.WithOrigins("*").AllowAnyMethod().AllowAnyHeader();
 }));
@@ -71,7 +68,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseCors("corsapp");
+app.UseCors("corsPolicy");
 app.UseRouting();
 
 app.UseAuthorization();
@@ -82,4 +79,3 @@ app.UseEndpoints(endpoints =>
 });
 
 app.Run();
-

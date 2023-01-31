@@ -12,6 +12,8 @@ namespace Net6StarterApp.Authentication
         public const string UnknownAuthError = "Unknown Error";
 
         public const string UknownRegistrationError = "Unknown Error in User Registration";
+
+        public const string CustomClaimPermissions = "permissions";
     }
 }
 
