@@ -31,6 +31,7 @@
     <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="6.25.1" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.25.1" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.13" />
+    <PackageReference Include="EFCore.NamingConventions" Version="6.0.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -147,6 +148,7 @@
     <None Remove="Authentication\Services\" />
     <None Remove="Controllers\" />
     <None Remove="Authentication\Permissions\" />
+    <None Remove="Migrations\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Data\" />
@@ -162,6 +164,7 @@
     <Folder Include="Authentication\Services\" />
     <Folder Include="Controllers\" />
     <Folder Include="Authentication\Permissions\" />
+    <Folder Include="Migrations\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="Net6StarterAppTests\obj\Debug\net6.0\Net6StarterAppTests.GlobalUsings.g.cs" />

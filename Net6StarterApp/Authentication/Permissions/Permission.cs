@@ -1,4 +1,7 @@
-﻿using System.Reflection;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.Reflection;
+using Microsoft.AspNetCore.Identity;
+using Net6StarterApp.Authentication.Models;
 
 namespace Net6StarterApp.Authentication.Permissions
 {
@@ -24,11 +27,14 @@ namespace Net6StarterApp.Authentication.Permissions
 
     }
 
+	[Table("permission_type")]
     public class PermissionType
     {
 		public int Id { get; set; }
 
 		public string Name { get; set; }
+
+		public ICollection<ApiRole> Roles { get; set; }
 
 		//Uses reflection to add Permissions.  Just add new permission to Permission class and assign Int.
 		//Anything new will be added to data seed on next migration

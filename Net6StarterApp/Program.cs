@@ -21,8 +21,11 @@ builder.Configuration.AddEnvironmentVariables();
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddDbContext<ApiDbContext>(options =>
-               options.UseNpgsql(builder.Configuration["DbConnection"])
-            );
+{
+    options.UseNpgsql(builder.Configuration["DbConnection"]);
+    options.UseSnakeCaseNamingConvention();
+}
+);
 
 
 builder.Services.AddAuthentication();

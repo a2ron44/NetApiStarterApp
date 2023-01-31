@@ -26,7 +26,7 @@ namespace Net6StarterApp.Authentication
                 q.Password.RequireNonAlphanumeric = false;
             });
 
-            builder = new IdentityBuilder(builder.UserType, typeof(IdentityRole), services);
+            builder = new IdentityBuilder(builder.UserType, typeof(ApiRole), services);
             builder.AddEntityFrameworkStores<T>().AddDefaultTokenProviders();
             return builder;
         }
