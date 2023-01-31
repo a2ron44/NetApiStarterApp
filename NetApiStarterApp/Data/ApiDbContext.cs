@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using NetApiStarterLibrary.Data;
+using NetApiStarterLibrary.Data.SeedData;
 
 namespace NetApiStarterApp.Data
 {
@@ -15,7 +16,9 @@ namespace NetApiStarterApp.Data
         {
             base.OnModelCreating(modelBuilder);
 
-           
+            //seed data for auth
+            modelBuilder.ApplyConfiguration(new SeedDataRoles());
+            modelBuilder.ApplyConfiguration(new SeedDataPermissions());
         }
 
         //Add DbSets here

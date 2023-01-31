@@ -5,7 +5,7 @@ using NetApiStarterLibrary.Models;
 
 namespace NetApiStarterLibrary.Permissions
 {
-	public static class Permission
+	public class Permission
 	{
 		//list of all permissions in system, to be used by contollers to Authorize via Permission Policy
 		public const int ViewData = 1;
@@ -14,7 +14,9 @@ namespace NetApiStarterLibrary.Permissions
 
 		public const int CreateData = 3;
 
-	}
+        public const int DeleteData = 4;
+
+    }
 
 	//Add Roles used in System.  Must add to SeeDataRoles too.
     public static class RoleType
@@ -38,11 +40,11 @@ namespace NetApiStarterLibrary.Permissions
 
 		//Uses reflection to add Permissions.  Just add new permission to Permission class and assign Int.
 		//Anything new will be added to data seed on next migration
-        public static List<PermissionType> GetAllPermissions()
+        public static List<PermissionType> GetAllPermissions<T>() where T: class
         {
 			List<PermissionType> permList = new List<PermissionType>();
 
-			foreach (FieldInfo info in typeof(Permission).GetFields().Where(x => x.IsStatic && x.IsLiteral))
+			foreach (FieldInfo info in typeof(T).GetFields().Where(x => x.IsStatic && x.IsLiteral))
 			{
 				permList.Add(new PermissionType
                 {

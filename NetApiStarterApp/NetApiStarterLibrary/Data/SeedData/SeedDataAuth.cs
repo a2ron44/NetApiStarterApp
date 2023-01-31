@@ -43,7 +43,7 @@ namespace NetApiStarterLibrary.Data.SeedData
         public void Configure(EntityTypeBuilder<PermissionType> builder)
         {
 
-            var permissionList = PermissionType.GetAllPermissions();
+            var permissionList = PermissionType.GetAllPermissions<Permission>();
 
             builder.HasData(permissionList);
         }
