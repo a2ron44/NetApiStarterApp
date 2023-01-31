@@ -36,7 +36,7 @@ namespace NetApiStarterLibrary
 
             if(jwtKey == null)
             {
-                jwtKey = "f20eabfb-ed2c-4a78-914e-96cb476c150c";
+                jwtKey = AuthConstants.GetDefaultJwtKey();
             }
 
             services.AddAuthentication(o =>

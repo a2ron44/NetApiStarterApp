@@ -5,9 +5,9 @@ namespace NetApiStarterApp.Data
 {
 	public class MappingProfile : ApiMappingProfile
     {
-		public MappingProfile()
+		public MappingProfile() : base()
 		{
-
+			
 			
 		}
 	}

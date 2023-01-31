@@ -16,7 +16,7 @@ namespace NetApiStarterApp.Data
         {
             base.OnModelCreating(modelBuilder);
 
-            //seed data for auth
+            //seed data for Roles/Permissions using NetApiStarterLibrary.  Can modify/extend as needed
             modelBuilder.ApplyConfiguration(new SeedDataRoles());
             modelBuilder.ApplyConfiguration(new SeedDataPermissions());
         }

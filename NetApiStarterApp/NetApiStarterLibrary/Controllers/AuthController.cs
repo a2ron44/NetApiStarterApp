@@ -25,7 +25,7 @@ namespace NetApiStarterLibrary.Controllers
 
         [HttpPost]
         [Route("register")]
-        public async Task<IActionResult> Register([FromBody] UserDTO userDTO)
+        public async Task<IActionResult> Register([FromBody] ApiUserDTO userDTO)
         {
             _logger.LogInformation($"Registration Attempt for {userDTO.Email}");
             
@@ -58,7 +58,7 @@ namespace NetApiStarterLibrary.Controllers
 
         [HttpPost]
         [Route("login")]
-        public async Task<IActionResult> Login([FromBody] LoginUserDTO userDTO)
+        public async Task<IActionResult> Login([FromBody] LoginApiUserDTO userDTO)
         {
             _logger.LogInformation($"Registration Attempt for {userDTO.Email}");
 

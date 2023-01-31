@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace NetApiStarterLibrary.Models
 {
-	public class LoginUserDTO
+	public class LoginApiUserDTO
 	{
 		[Required]
 		[DataType(DataType.EmailAddress)]
@@ -14,7 +14,7 @@ namespace NetApiStarterLibrary.Models
 		public string Password { get; set; }
 	}
 
-    public class UserDTO : LoginUserDTO
+    public class ApiUserDTO : LoginApiUserDTO
     {
         
     }

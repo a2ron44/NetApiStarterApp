@@ -8,7 +8,7 @@ namespace NetApiStarterLibrary.Data
 		public ApiMappingProfile()
 		{
             //Auth OBJ
-            CreateMap<ApiUser, UserDTO>().ReverseMap();
+            CreateMap<ApiUser, ApiUserDTO>().ReverseMap();
         }
 	}
 }

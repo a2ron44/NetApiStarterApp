@@ -14,6 +14,13 @@ namespace NetApiStarterLibrary
         public const string UknownRegistrationError = "Unknown Error in User Registration";
 
         public const string CustomClaimPermissions = "permissions";
+
+        public static string GetDefaultJwtKey()
+        {
+            return "f20eabfb-ed2c-4a78-914e-96cb476c150c";
+        }
     }
+
+   
 }
 

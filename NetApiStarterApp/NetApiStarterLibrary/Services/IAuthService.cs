@@ -7,7 +7,7 @@ namespace NetApiStarterLibrary.Services
 
 		Task<bool> DoesUserExist(string userName);
 		Task<bool> CreateNormalUser(ApiUser user, string password);
-        Task<bool> ValidateUser(LoginUserDTO userDTO);
+        Task<bool> ValidateUser(LoginApiUserDTO userDTO);
 		Task<string> CreateToken();
 		
 	}

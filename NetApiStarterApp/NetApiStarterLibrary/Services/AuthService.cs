@@ -50,7 +50,7 @@ namespace NetApiStarterLibrary.Services
             return new JwtSecurityTokenHandler().WriteToken(tokenOptions);
         }
 
-        public async Task<bool> ValidateUser(LoginUserDTO userDTO)
+        public async Task<bool> ValidateUser(LoginApiUserDTO userDTO)
         {
             _user = await _userManager.FindByNameAsync(userDTO.Email);
             var passcheck = await _userManager.CheckPasswordAsync(_user, userDTO.Password);
@@ -71,6 +71,12 @@ namespace NetApiStarterLibrary.Services
         private SigningCredentials GetSigningCredentials()
         {
             var jwtKey = _configuration.GetSection("JWT_KEY").Value;
+
+            if (jwtKey == null)
+            {
+                jwtKey = AuthConstants.GetDefaultJwtKey();
+            }
+
             var secret = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey));
 
             return new SigningCredentials(secret, SecurityAlgorithms.HmacSha256);
@@ -110,7 +116,7 @@ namespace NetApiStarterLibrary.Services
 
         private JwtSecurityToken GenerateTokenOptions(SigningCredentials signingCredentials, List<Claim> claims)
         {
-            var jwtSettings = _configuration.GetSection("JwtConfig");
+            var jwtSettings = _configuration.GetSection("NetApiStarterLibaryConfig");
             var tokenExpiryMinutes = Convert.ToDouble(_configuration.GetSection("TokenExpiryMinutes").Value);
 
             var options = new JwtSecurityToken(
