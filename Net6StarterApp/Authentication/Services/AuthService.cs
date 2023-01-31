@@ -24,7 +24,7 @@ namespace Net6StarterApp.Authentication.Services
             _logger = logger;
         }
 
-        public async Task<bool> CreateUser(ApiUser user, string password)
+        public async Task<bool> CreateNormalUser(ApiUser user, string password)
         {
 
             var result = await _userManager.CreateAsync(user, password);
@@ -35,6 +35,8 @@ namespace Net6StarterApp.Authentication.Services
                 _logger.LogError($"Error in {nameof(AuthService)}");
                 return false;
             }
+            var roleResult = await _userManager.AddToRoleAsync(user, RoleType.NormalUser);
+
             return true;
 
         }

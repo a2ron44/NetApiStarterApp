@@ -7,7 +7,7 @@ namespace Net6StarterApp.Authentication.Services
 	{
 
 		Task<bool> DoesUserExist(string userName);
-		Task<bool> CreateUser(ApiUser user, string password);
+		Task<bool> CreateNormalUser(ApiUser user, string password);
         Task<bool> ValidateUser(LoginUserDTO userDTO);
 		Task<string> CreateToken();
 		

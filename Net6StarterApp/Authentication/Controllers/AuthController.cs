@@ -41,7 +41,7 @@ namespace Net6StarterApp.Authentication.Controllers
                 }
                 var user = _mapper.Map<ApiUser>(userDTO);
                 user.UserName = user.Email;
-                var result = await _authService.CreateUser(user, userDTO.Password);
+                var result = await _authService.CreateNormalUser(user, userDTO.Password);
 
                 if (!result)
                 {
