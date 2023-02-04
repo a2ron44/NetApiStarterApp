@@ -21,7 +21,7 @@ public class WeatherForecastController : ControllerBase
         _logger = logger;
     }
 
-    [HasPermission(Permission.EditData)]
+    [HasPermission(PermissionType.EditData)]
     [Route("b")]
     [HttpGet]
     public IEnumerable<NewObj> Get()
@@ -33,7 +33,7 @@ public class WeatherForecastController : ControllerBase
         .ToArray();
     }
 
-    [HasPermission(Permission.ViewData)]
+    [HasPermission(PermissionType.ViewData)]
     [Route("a")]
     [HttpGet]
     public IEnumerable<NewObj> Get2()

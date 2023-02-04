@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.AspNetCore.Identity;
+using NetApiStarterApp.NetApiStarterLibrary.Permissions;
 using NetApiStarterLibrary.Permissions;
 
 namespace NetApiStarterLibrary.Models
@@ -8,7 +9,7 @@ namespace NetApiStarterLibrary.Models
 	{
         public ApiRole() : base(){}
 
-        public virtual ICollection<PermissionType> PermissionTypes { get; set; }
+        public virtual ICollection<PermissionRole> PermissionRoles { get; set; }
 	}
 }
 

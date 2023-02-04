@@ -3,8 +3,10 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using NetApiStarterApp.Data;
 using NetApiStarterLibrary.Models;
 using NetApiStarterLibrary.Permissions;
 
@@ -12,15 +14,19 @@ namespace NetApiStarterLibrary.Services
 {
 	public class AuthService : IAuthService
 	{
+        private readonly ApiDbContext _context;
         private readonly IConfiguration _configuration;
         private readonly UserManager<ApiUser> _userManager;
+        private readonly RoleManager<ApiRole> _roleManager;
         private readonly ILogger<AuthService> _logger;
         private ApiUser _user;
 
-        public AuthService(IConfiguration configuration, UserManager<ApiUser> userManager, ILogger<AuthService> logger)
+        public AuthService(ApiDbContext context,  IConfiguration configuration, UserManager<ApiUser> userManager, RoleManager<ApiRole> roleManager, ILogger<AuthService> logger)
 		{
+            _context = context;
             _configuration = configuration;
             _userManager = userManager;
+            _roleManager = roleManager;
             _logger = logger;
         }
 
@@ -89,13 +95,13 @@ namespace NetApiStarterLibrary.Services
                 new Claim(ClaimTypes.Name, _user.UserName)
             };
 
-            var roles = await _userManager.GetRolesAsync(_user);
-            foreach(var role in roles)
+            var roles = await GetRolesForUser();
+            foreach (var role in roles)
             {
                 claims.Add(new Claim(ClaimTypes.Role, role));
             }
 
-            var permissions = GetPermissionClaims(_user.UserName);
+            var permissions = await GetPermissionClaims(roles);
             foreach(var perm in permissions)
             {
                 claims.Add(perm);
@@ -104,12 +110,32 @@ namespace NetApiStarterLibrary.Services
             return claims;
         }
 
-        private  List<Claim> GetPermissionClaims(string userName)
+        private async Task<IList<string>> GetRolesForUser()
+        {
+            var roles = await _userManager.GetRolesAsync(_user);
+
+            return roles;
+
+        }
+
+        private async Task<List<Claim>> GetPermissionClaims(IList<string> roles)
         {
             var claims = new List<Claim>();
 
-            claims.Add(new Claim(AuthConstants.CustomClaimPermissions, Permission.ViewData.ToString()));
-            claims.Add(new Claim(AuthConstants.CustomClaimPermissions, Permission.EditData.ToString()));
+            // Highly customizable part.  Assuming Roles are tied to Permissions
+
+            //Get Permissions Linked to Role
+
+            var distinctPerms = await _context.PermissionRoles.Include(r => r.Role).Include(x => x.Permission)
+                .Where(x => roles.Contains(x.Role.Name)).Select(x => x.PermissionId).Distinct().ToListAsync();
+
+            foreach(var perm in distinctPerms)
+            {
+                claims.Add(new Claim(AuthConstants.CustomClaimPermissions, perm.ToString()));
+            }
+
+
+            
             return claims;
             
         }

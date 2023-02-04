@@ -14,7 +14,7 @@ namespace NetApiStarterLibrary
 	{
         public static IdentityBuilder ConfigureIdentity<T>(this IServiceCollection services) where T : DbContext
         {
-            var builder = services.AddIdentityCore<ApiUser>(q =>
+            var builder = services.AddIdentity<ApiUser, ApiRole>(q =>
             {
                 q.User.RequireUniqueEmail = true;
                 q.Password.RequireDigit = false;

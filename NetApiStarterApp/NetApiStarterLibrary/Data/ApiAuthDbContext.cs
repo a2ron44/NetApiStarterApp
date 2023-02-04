@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
+using NetApiStarterApp.NetApiStarterLibrary.Permissions;
 using NetApiStarterLibrary.Data.SeedData;
 using NetApiStarterLibrary.Models;
 using NetApiStarterLibrary.Permissions;
@@ -28,10 +29,10 @@ namespace NetApiStarterLibrary.Data
             modelBuilder.Entity<IdentityUserToken<string>>(entity => { entity.ToTable("user_token"); });
             modelBuilder.Entity<IdentityRoleClaim<string>>(entity => { entity.ToTable("role_claim"); });
 
-            modelBuilder.Entity<ApiRole>()
-                .HasMany(left => left.PermissionTypes)
-                .WithMany(right => right.Roles)
-                .UsingEntity(join => join.ToTable("role_permission"));
+            //modelBuilder.Entity<ApiRole>()
+            //    .HasMany(left => left.PermissionRoles)
+            //    .WithMany(right => right.R)
+            //    .UsingEntity(join => join.ToTable("role_permission"));
             //  modelBuilder.ApplyConfiguration(new SeedDataRolePermissions());
 
             modelBuilder.RemoveOneToManyCascade();
@@ -39,7 +40,8 @@ namespace NetApiStarterLibrary.Data
         }
 
         //needed for Auth
-        public virtual DbSet<PermissionType> PermissionTypes { get; set; }
+        public virtual DbSet<Permission> Permissions { get; set; }
+        public virtual DbSet<PermissionRole> PermissionRoles { get; set; }
         // public virtual DbSet<RefreshToken> RefreshTokens { get; set; }
 
 

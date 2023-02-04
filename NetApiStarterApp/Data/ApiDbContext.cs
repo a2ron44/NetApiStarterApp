@@ -19,6 +19,11 @@ namespace NetApiStarterApp.Data
             //seed data for Roles/Permissions using NetApiStarterLibrary.  Can modify/extend as needed
             modelBuilder.ApplyConfiguration(new SeedDataRoles());
             modelBuilder.ApplyConfiguration(new SeedDataPermissions());
+            modelBuilder.ApplyConfiguration(new SeedDataPermissionRoles());
+
+
+
+
         }
 
         //Add DbSets here
