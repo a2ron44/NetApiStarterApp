@@ -14,6 +14,7 @@ using NetApiStarterLibrary.Models;
 using NetApiStarterLibrary.Services;
 using NetApiStarterApp.Data;
 using System.Collections;
+using NetApiStarterApp.NetApiStarterLibrary;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Configuration.AddEnvironmentVariables();
@@ -38,6 +39,7 @@ builder.Services.AddSingleton<IAuthorizationHandler, PermissionAuthorizationHand
 builder.Services.AddSingleton<IAuthorizationPolicyProvider, PermissionAuthorizationPolicyProvider>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddScoped<JwtUtils>();
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 //make sure errors go to API Response object
 builder.Services.AddMvc()

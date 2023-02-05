@@ -1,4 +1,6 @@
-﻿using NetApiStarterLibrary.Models;
+﻿using NetApiStarterApp.NetApiStarterLibrary.Models;
+using System.Security.Claims;
+using NetApiStarterLibrary.Models;
 
 namespace NetApiStarterLibrary.Services
 {
@@ -7,9 +9,11 @@ namespace NetApiStarterLibrary.Services
 
 		Task<bool> DoesUserExist(string userName);
 		Task<bool> CreateNormalUser(ApiUser user, string password);
+		Task<AuthResponse> CreateJwtAuthResponse(string userName);
         Task<bool> ValidateUser(LoginApiUserDTO userDTO);
-		Task<string> CreateToken();
-		
-	}
+		Task<AuthResponse> RefreshToken(TokenRequestDTO tokenRequest);
+
+
+    }
 }
 

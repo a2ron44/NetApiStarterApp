@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Reflection.Emit;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Metadata.Conventions;
+using NetApiStarterApp.NetApiStarterLibrary.Models;
 using NetApiStarterApp.NetApiStarterLibrary.Permissions;
 using NetApiStarterLibrary.Data.SeedData;
 using NetApiStarterLibrary.Models;
@@ -29,20 +32,16 @@ namespace NetApiStarterLibrary.Data
             modelBuilder.Entity<IdentityUserToken<string>>(entity => { entity.ToTable("user_token"); });
             modelBuilder.Entity<IdentityRoleClaim<string>>(entity => { entity.ToTable("role_claim"); });
 
-            //modelBuilder.Entity<ApiRole>()
-            //    .HasMany(left => left.PermissionRoles)
-            //    .WithMany(right => right.R)
-            //    .UsingEntity(join => join.ToTable("role_permission"));
-            //  modelBuilder.ApplyConfiguration(new SeedDataRolePermissions());
 
             modelBuilder.RemoveOneToManyCascade();
 
         }
 
+
         //needed for Auth
         public virtual DbSet<Permission> Permissions { get; set; }
         public virtual DbSet<PermissionRole> PermissionRoles { get; set; }
-        // public virtual DbSet<RefreshToken> RefreshTokens { get; set; }
+        public virtual DbSet<RefreshToken> RefreshTokens { get; set; }
 
 
 
@@ -57,7 +56,6 @@ namespace NetApiStarterLibrary.Data
                 .ToList()
                 .ForEach(fk => fk.DeleteBehavior = DeleteBehavior.Restrict));
         }
-
 
         private static void EntityLoop(this ModelBuilder builder, Action<IMutableEntityType> action)
         {

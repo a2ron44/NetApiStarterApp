@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.Metrics;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -7,6 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using NetApiStarterApp.Data;
+using NetApiStarterApp.NetApiStarterLibrary;
+using NetApiStarterApp.NetApiStarterLibrary.Models;
 using NetApiStarterLibrary.Models;
 using NetApiStarterLibrary.Permissions;
 
@@ -18,16 +21,21 @@ namespace NetApiStarterLibrary.Services
         private readonly IConfiguration _configuration;
         private readonly UserManager<ApiUser> _userManager;
         private readonly RoleManager<ApiRole> _roleManager;
+        private readonly TokenValidationParameters _tokenValidationParameters;
         private readonly ILogger<AuthService> _logger;
+        private readonly JwtUtils _jwtUtils;
         private ApiUser _user;
 
-        public AuthService(ApiDbContext context,  IConfiguration configuration, UserManager<ApiUser> userManager, RoleManager<ApiRole> roleManager, ILogger<AuthService> logger)
+        public AuthService(ApiDbContext context,  IConfiguration configuration, UserManager<ApiUser> userManager, RoleManager<ApiRole> roleManager,
+            TokenValidationParameters tokenValidationParameters, ILogger<AuthService> logger, JwtUtils jwtUtils)
 		{
             _context = context;
             _configuration = configuration;
             _userManager = userManager;
             _roleManager = roleManager;
+            _tokenValidationParameters = tokenValidationParameters;
             _logger = logger;
+            _jwtUtils = jwtUtils;
         }
 
         public async Task<bool> CreateNormalUser(ApiUser user, string password)
@@ -47,13 +55,23 @@ namespace NetApiStarterLibrary.Services
 
         }
 
-        public async Task<string> CreateToken()
+        public async Task<AuthResponse> CreateJwtAuthResponse(string userName)
         {
-            var signingCredentials = GetSigningCredentials();
-            var claims = await GetClaims();
-            var tokenOptions = GenerateTokenOptions(signingCredentials, claims);
+            var claims = await GetClaims(userName);
+            var rawJwtToken = _jwtUtils.GenerateRawJwtToken(claims);
 
-            return new JwtSecurityTokenHandler().WriteToken(tokenOptions);
+            var jwtToken = _jwtUtils.FormatTokenToString(rawJwtToken);
+
+            var refreshToken = await _jwtUtils.GenerateAndStoreRefreshToken(rawJwtToken, userName);
+
+            return new AuthResponse
+            {
+                Success = true,
+                UserName = userName,
+                Token = jwtToken,
+                RefreshToken = refreshToken.Token
+            };
+
         }
 
         public async Task<bool> ValidateUser(LoginApiUserDTO userDTO)
@@ -63,10 +81,84 @@ namespace NetApiStarterLibrary.Services
             return (_user != null && await _userManager.CheckPasswordAsync(_user, userDTO.Password));
         }
 
-        //public async Task<bool> IsPasswordValid(string password)
-        //{
-        //    var passcheck = await _userManager.PasswordValidators.ValidateAsync(password);
-        //}
+        public async Task<AuthResponse> RefreshToken(TokenRequestDTO tokenRequest)
+        {
+            try
+            {
+                var authResult = await VerifyRefreshTokenAndGenerateJwt(tokenRequest);
+
+                if (authResult == null)
+                {
+                    throw new ApiServiceException("Invalid Token");
+                }
+
+                return authResult;
+            }
+            catch (ApiServiceException ex)
+            {
+                return new AuthResponse()
+                {
+                    Success = false,
+                    Errors = new List<string>() {
+                            ex.Message
+                    }
+                };
+            }
+            catch (InvalidDataException ex)
+            {
+                return new AuthResponse()
+                {
+                    Success = false,
+                    Errors = new List<string>() {
+                            ex.Message
+                    }
+                };
+            }
+            catch (Exception)
+            {
+                return new AuthResponse()
+                {
+                    Success = false,
+                    Errors = new List<string>() {
+                            AuthConstants.UnknownAuthError
+                    }
+                };
+            }
+        }
+
+        private async Task<AuthResponse> VerifyRefreshTokenAndGenerateJwt(TokenRequestDTO tokenRequest)
+        {
+            try
+            {
+
+                var validToken = await _jwtUtils.VerifyRefreshTokenAndInvalidate(tokenRequest);
+                string userName = String.Empty;
+
+                if (validToken != null)
+                {
+
+                    userName = validToken.Claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Name)?.Value;
+                    if (userName == null)
+                    {
+                        throw new InvalidDataException("Invalid UserName");
+                    }
+
+                    return await CreateJwtAuthResponse(userName);
+                }
+                else
+                {
+                    throw new Exception("Unexpected Error - Token");
+                }
+            }
+            catch (InvalidDataException)
+            {
+                throw;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
 
         public async Task<bool> DoesUserExist(string userName)
         {
@@ -74,28 +166,11 @@ namespace NetApiStarterLibrary.Services
             return (existingUser != null);
         }
 
-        private SigningCredentials GetSigningCredentials()
+        private async Task<List<Claim>> GetClaims(string userName)
         {
-            var jwtKey = _configuration.GetSection("JWT_KEY").Value;
+            var claims = _jwtUtils.GetStandardClaims(userName);
 
-            if (jwtKey == null)
-            {
-                jwtKey = AuthConstants.GetDefaultJwtKey();
-            }
-
-            var secret = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey));
-
-            return new SigningCredentials(secret, SecurityAlgorithms.HmacSha256);
-        }
-
-        private async Task<List<Claim>> GetClaims()
-        {
-            var claims = new List<Claim>()
-            {
-                new Claim(ClaimTypes.Name, _user.UserName)
-            };
-
-            var roles = await GetRolesForUser();
+            var roles = await GetRolesForUser(userName);
             foreach (var role in roles)
             {
                 claims.Add(new Claim(ClaimTypes.Role, role));
@@ -110,9 +185,10 @@ namespace NetApiStarterLibrary.Services
             return claims;
         }
 
-        private async Task<IList<string>> GetRolesForUser()
+        private async Task<IList<string>> GetRolesForUser(string userName)
         {
-            var roles = await _userManager.GetRolesAsync(_user);
+            var user = await _userManager.FindByNameAsync(userName);
+            var roles = await _userManager.GetRolesAsync(user);
 
             return roles;
 
@@ -135,26 +211,17 @@ namespace NetApiStarterLibrary.Services
             }
 
 
-            
             return claims;
             
         }
 
-        private JwtSecurityToken GenerateTokenOptions(SigningCredentials signingCredentials, List<Claim> claims)
-        {
-            var jwtSettings = _configuration.GetSection("NetApiStarterLibaryConfig");
-            var tokenExpiryMinutes = Convert.ToDouble(_configuration.GetSection("TokenExpiryMinutes").Value);
 
-            var options = new JwtSecurityToken(
-                issuer: jwtSettings.GetSection("Issuer").Value,
-                audience: jwtSettings.GetSection("Audience").Value,
-                claims: claims,
-                expires: DateTime.Now.AddMinutes(tokenExpiryMinutes),
-                signingCredentials: signingCredentials
-                );
+        
 
-            return options;
-        }
+        
+
+  
+
     }
 }
 

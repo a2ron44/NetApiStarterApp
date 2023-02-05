@@ -3,13 +3,14 @@ using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using NetApiStarterApp.NetApiStarterLibrary.Models;
 using NetApiStarterLibrary.Models;
 using NetApiStarterLibrary.Services;
 
 namespace NetApiStarterLibrary.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/auth")]
     public class AuthController : ControllerBase
 	{
         private readonly IAuthService _authService;
@@ -71,13 +72,42 @@ namespace NetApiStarterLibrary.Controllers
                     return BadRequest(new ApiError(AuthConstants.InvalidLogin));
                 }
 
-                return Accepted(new { Token = await _authService.CreateToken() });
+                var authReponse = await _authService.CreateJwtAuthResponse(userDTO.Email);
+
+                return Accepted(authReponse);
 
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, $"Error in {nameof(Login)}");
                 return Problem("Unexpected Issue");
+            }
+        }
+
+        [HttpPost]
+        [Route("refreshtoken")]
+        public async Task<ActionResult<AuthResponse>> RefreshToken([FromBody] TokenRequestDTO tokenRequest)
+        {
+
+            try
+            {
+                var authResult = await _authService.RefreshToken(tokenRequest);
+
+                return Ok(authResult);
+            }
+            catch (InvalidDataException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return Ok(new AuthResponse()
+                {
+                    Success = false,
+                    Errors = new List<string>() {
+                                    ex.Message
+                                }
+                });
             }
         }
     }
